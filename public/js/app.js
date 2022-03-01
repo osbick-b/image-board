@@ -4,10 +4,9 @@ const app = Vue.createApp({
     data() {
         return {
             appName: "fistagram",
-            heading: "",
             title: "",
-            username:"",
-            description:"",
+            username: "",
+            description: "",
             images: [],
         };
     },
@@ -16,7 +15,7 @@ const app = Vue.createApp({
     },
     mounted: function () {
         console.log("app has been mounted");
-        fetch("/images.json")
+        fetch("/images.json") // ------- ??? ------ where does it exist???
             .then((resp) => resp.json())
             .then((data) => {
                 console.log("data", data);
@@ -27,15 +26,35 @@ const app = Vue.createApp({
             });
     },
     methods: {
-        selectFile: function() {
-            console.log("user selected file");
+        selectFile: function (e) {
+            console.log(">>> user selected file");
+            this.file = e.target.files[0];
         },
-        upload: function() {
-            console.log("user wants to upload stuff");
+        upload: function (e) {
+            console.log(">>> user wants to upload stuff");
+            console.log("this.title", this.title);
+            console.log("this.description: ", this.description);
+            console.log("this.username: ", this.username);
+            console.log("this.file: ", this.file);
+            const fd = new FormData();
+            fd.append("file", this.file);
+            fd.append("title", this.title);
+            fd.append("username", this.username);
+            fd.append("description", this.description);
+            fetch("/upload.json", {
+                method: "POST",
+                body: fd,
+            })
+                .then((resp) => {
+                    resp.json();
+                })
+                .then((resp) => {
+                    console.log("resp in fetch /upload", resp);
+                })
+                .catch((err) => {
+                    console.log("error in /upload", err);
+                });
         },
-        // firstMethod: function() {
-        //     console.log(">>> running firstMethod");
-        // }
     },
 }); // us creating a vue application
 

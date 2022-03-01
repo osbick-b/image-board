@@ -24,6 +24,20 @@ const uploader = multer({
 });
 
 
+//----- This is case we dont use a form -- using formData API instead
+//////////////////////////////////////
+// const file = myFileInput.files[0];
+
+// const formData = new formData();
+// formData.append("file", file);
+
+// fetch("/upload.json", {
+//     method: "POST",
+//     body: formData,
+// });
+/////////////////////////////////////
+
+
 
 app.use(express.static('./public'));
 

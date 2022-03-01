@@ -13,14 +13,14 @@
 
         <section id="upload">
             <form>
-                <label class="upload" for="title">title</label>
-                <input class="upload" v-model="title" type="text" name="title" id="title">
-                <label class="upload" for="username">username</label>
-                <input class="upload" v-model="username" type="text" name="username" id="username">
-                <label class="upload" for="description">description</label>
-                <input class="upload" v-model="description" type="text" name="description" id="description">
-                <label class="upload" for="file">file</label>
-                <input class="upload" @change="selectFile" type="file" name="file" id="file" accept="image/*">
+                <label for="title">title</label>
+                <input v-model="title" type="text" name="title" id="title">
+                <label for="username">username</label>
+                <input v-model="username" type="text" name="username" id="username">
+                <label for="description">description</label>
+                <input v-model="description" type="text" name="description" id="description">
+                <label for="file">file</label>
+                <input @change="selectFile" type="file" name="file" id="file" accept="image/*">
                 <button @click.prevent.default="upload">Upload</button>
             </form>
         </section>

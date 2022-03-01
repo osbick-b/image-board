@@ -43,15 +43,12 @@ section#img-grid {
     grid-template-columns: repeat(3,1fr);
     gap: 1vw;
     place-items:center;
-    /* overflow: hidden; */
-}
-
-div.one-img {
-    background-color: var(--main-bg-color);
 }
 
 .one-img {
-    
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
 }
 
 .img-title {
