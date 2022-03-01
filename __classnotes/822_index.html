@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ImageBoard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>i luv vue.</h1>
+    <main id="main">
+        <h3>i can do math {{2*400}}</h3>
+        <h3>i can capitalize {{"somestr".toUpperCase()}} </h3>
+        <h3> i can do simple ternary expressions {{false? "💤":"🎅"}} </h3>
+        <h3>this cohorts name is {{name}} </h3>
+        <h3 v-if="show">V-Statements: i show up when the prop "show" in the data function evaluates to sth truthy</h3>
+        <ul v-for="candy in sweets">
+            <li @click="mySecondMethodWithAnArg(candy.emoji)"> {{candy.emoji}} </li>
+        </ul>
+        <h2 v-on:click="myFirstMethod">Click here to run myFirstMethod (this is an EL)</h2>
+        <br>
+    </main>
+    <script src="/js/app.js" type="module" crossorigin="use-credentials"></script>
+</body>
+</html>

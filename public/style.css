@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #7b68ee;
+    position: relative;
+}
+
+:root {
+    --main-bg-color: blue;
+}
+
+main#main {
+}
+
+section {
+    width: 90%;
+    margin: 5vh auto;
+}
+/*////////// HEADER //////////*/
+#main-header {}
+
+.logo {}
+
+/*/ /////////  //////////*/
+section#upload {
+}
+
+input.upload {
+}
+
+label.upload {
+}
+
+/*////////// UPLOAD SECTION //////////*/
+
+/*/ ///////// IMAGE GRID //////////*/
+
+section#img-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1vw;
+    place-items:center;
+    /* overflow: hidden; */
+}
+
+div.one-img {
+    background-color: var(--main-bg-color);
+}
+
+.one-img {
+    
+}
+
+.img-title {
+}
