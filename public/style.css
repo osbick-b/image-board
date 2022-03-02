@@ -9,7 +9,7 @@ body {
 }
 
 :root {
-    --main-bg-color: blue;
+    --main-bg-color: pink;
 }
 
 main#main {
@@ -53,3 +53,25 @@ section#img-grid {
 
 .img-title {
 }
+
+
+/*/ ///////// MODAL //////////*/
+
+.img-modal.bg {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-modal .container {
+    height: 80%;
+    width: 80%;
+    background-color: var(--main-bg-color);
+}
+

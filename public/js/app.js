@@ -1,4 +1,5 @@
 import * as Vue from "./vue.js";
+import imgModal from "./components.js";
 
 const app = Vue.createApp({
     data() {
@@ -8,7 +9,11 @@ const app = Vue.createApp({
             username: "",
             description: "",
             images: [],
+            condition: false,
         };
+    },
+    components: {
+        "img-modal": imgModal,
     },
     updated: function () {
         console.log("app has been updated");
@@ -26,6 +31,14 @@ const app = Vue.createApp({
             });
     },
     methods: {
+        closeModal: function() {
+            console.log("-- ok child, i heard ya. gonna close modal");
+            this.condition = false;
+        },
+        openModal: function() {
+            console.log(">> Wants to open modal");
+            this.condition = true;
+        },
         selectFile: function (e) {
             console.log(">>> user selected file");
             this.file = e.target.files[0];
