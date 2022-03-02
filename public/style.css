@@ -38,7 +38,7 @@ label.upload {
 
 /*/ ///////// IMAGE GRID //////////*/
 
-section#img-grid {
+section.img-grid {
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 1vw;
@@ -61,7 +61,7 @@ section#img-grid {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.6);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     display: flex;

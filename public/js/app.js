@@ -10,6 +10,7 @@ const app = Vue.createApp({
             description: "",
             images: [],
             condition: false,
+            currImg: null,
         };
     },
     components: {
@@ -35,8 +36,10 @@ const app = Vue.createApp({
             // console.log("-- ok child, i heard ya. gonna close modal");
             this.condition = false;
         },
-        openModal: function() {
-            // console.log(">> Wants to open modal");
+        openModal: function(img) {
+            console.log(">> Wants to open modal");
+            console.log("img arg", img);
+            this.currImg = img;
             this.condition = true;
         },
         selectFile: function (e) {

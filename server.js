@@ -66,7 +66,7 @@ app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
         req.body.username,
         `https://s3.amazonaws.com/spicedling/${req.file.filename}`
     ).then(function({rows}) {
-        // console.log("---> FROM DB: rows addImg", rows);
+        console.log("---> FROM DB: rows addImg", rows);
         res.json(rows[0])
     }).catch((err) => {
         console.log("error in addImage /upload", err);

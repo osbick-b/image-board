@@ -25,14 +25,14 @@
             </form>
         </section>
         
-        <section v-for="img in images" id="img-grid">
-            <div class="one-img" @click="openModal">
-                <img class="one-img" v-bind:src="img.url" :alt="img.title">
+        <section v-for="img in images" :key="img.id" class="img-grid">
+            <div class="one-img" @click="openModal(img)">
+                <img class="one-img" :src="img.url" :alt="img.title">
                 <p class="img-title">{{img.title}}</p>
             </div>
         </section>
-
-        <img-modal v-if="condition" @clickedx="closeModal"></img-modal>
+        
+        <img-modal v-if="condition" :curr-img="currImg" @clickedx="closeModal"></img-modal>
         
     </main>
     <script src="/js/app.js" type="module" crossorigin="use-credentials"></script>
