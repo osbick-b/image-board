@@ -32,23 +32,20 @@ const app = Vue.createApp({
     },
     methods: {
         closeModal: function() {
-            console.log("-- ok child, i heard ya. gonna close modal");
+            // console.log("-- ok child, i heard ya. gonna close modal");
             this.condition = false;
         },
         openModal: function() {
-            console.log(">> Wants to open modal");
+            // console.log(">> Wants to open modal");
             this.condition = true;
         },
         selectFile: function (e) {
-            console.log(">>> user selected file");
+            // console.log(">>> user selected file");
             this.file = e.target.files[0];
         },
-        upload: function (e) {
+        uploadImg: function (e) {
             console.log(">>> user wants to upload stuff");
-            console.log("this.title", this.title);
-            console.log("this.description: ", this.description);
-            console.log("this.username: ", this.username);
-            console.log("this.file: ", this.file);
+
             const fd = new FormData();
             fd.append("file", this.file);
             fd.append("title", this.title);

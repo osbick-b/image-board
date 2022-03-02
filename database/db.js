@@ -12,10 +12,9 @@ module.exports.getImages = () => {
     return db.query(`SELECT * FROM images`);
 };
 
-module.exports.addImages = (title, description, username, url) => {
-    console.log("-- in db addImages");
+module.exports.addImage = (title, description, username, url) => {
     return db.query(
-        `INSERT INTO images (title, description, username, url) VALUES ($1, $2, $3, $4)`,
+        `INSERT INTO images (title, description, username, url) VALUES ($1, $2, $3, $4) RETURNING (title, description, username, url)`,
         [title, description, username, url]
     );
 };

@@ -7,7 +7,7 @@ const imgModal = {
     },
     props: ["myProp"],
     mounted() {
-        console.log(`${this.name} has been mounted`);
+        // console.log(`${this.name} has been mounted`);
         console.log("props: ", this.myProp);
     },
     methods: {

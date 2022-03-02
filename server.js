@@ -53,23 +53,20 @@ app.get("/images.json", (req,res) => {
             res.json(results.rows);
         }
     );
-    // 1st talk to database, find out all the image data we have 
-    // pass array to res.json to send info back to client
 });
 
 //----- POST /upload
 app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
-    console.log(">>> upload was hit");
-    console.log("req.file", req.file);
-    console.log("req.body", req.body);
-
+    // console.log(">>> upload was hit");
+    // console.log("req.file", req.file);
+    // console.log("req.body", req.body);
     db.addImage(
         req.body.title,
         req.body.description,
         req.body.username,
-        `https://s3.amazonaws.com/spicedling/${req.file}`
+        `https://s3.amazonaws.com/spicedling/${req.file.filename}`
     ).then(function({rows}) {
-        console.log("---> FROM DB: rows addImg", rows);
+        // console.log("---> FROM DB: rows addImg", rows);
         res.json(rows[0])
     }).catch((err) => {
         console.log("error in addImage /upload", err);
