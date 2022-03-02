@@ -2,6 +2,7 @@ const express = require('express');
 const app = express(); // creating an instance of express
 
 const db = require("./database/db");
+const s3 = require("./s3");
 
 
 const multer = require("multer");
@@ -57,18 +58,25 @@ app.get("/images.json", (req,res) => {
 });
 
 //----- POST /upload
-app.post("/upload.json", uploader.single("file"), function (req, res) {
+app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
     console.log(">>> upload was hit");
     console.log("req.file", req.file);
     console.log("req.body", req.body);
 
-    // THIS HAS TO BE CHANGED BASED ON DAVIDS CLASS --->
-    if (req.file) {
-        res.json({ success: true });
-    } else {
-        res.json({ success: false });
-    }
-});
+    db.addImage(
+        req.body.title,
+        req.body.description,
+        req.body.username,
+        `https://s3.amazonaws.com/spicedling/${req.file}`
+    ).then(function({rows}) {
+        console.log("---> FROM DB: rows addImg", rows);
+        res.json(rows[0])
+    }).catch((err) => {
+        console.log("error in addImage /upload", err);
+        res.sendStatus(500);
+    });
+
+   });
 
 //---- GET *
 app.get('*', (req, res) => {// star route is the only route that will serve stuff in our project
