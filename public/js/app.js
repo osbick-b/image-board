@@ -9,8 +9,7 @@ const app = Vue.createApp({
             username: "",
             description: "",
             images: [],
-            condition: false,
-            currImg: null,
+            imgId: 0,
         };
     },
     components: {
@@ -34,13 +33,13 @@ const app = Vue.createApp({
     methods: {
         closeModal: function() {
             // console.log("-- ok child, i heard ya. gonna close modal");
-            this.condition = false;
+            this.imgId = 0;
         },
-        openModal: function(img) {
+        openModal: function(id) {
             console.log(">> Wants to open modal");
-            console.log("img arg", img);
-            this.currImg = img;
-            this.condition = true;
+            console.log("img arg", id);
+            this.imgId = id;
+            fetch("/images/:id")
         },
         selectFile: function (e) {
             // console.log(">>> user selected file");
@@ -59,10 +58,11 @@ const app = Vue.createApp({
                 body: fd,
             })
                 .then((resp) => {
-                    resp.json();
+                    return resp.json();
                 })
                 .then((resp) => {
                     console.log("resp in fetch /upload", resp);
+                    return this.images.unshift(resp);
                 })
                 .catch((err) => {
                     console.log("error in /upload", err);

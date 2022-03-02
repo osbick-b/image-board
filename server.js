@@ -65,15 +65,17 @@ app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
         req.body.description,
         req.body.username,
         `https://s3.amazonaws.com/spicedling/${req.file.filename}`
-    ).then(function({rows}) {
-        console.log("---> FROM DB: rows addImg", rows);
+    ).then(({rows}) => {
+        console.log("---> FROM DB in server.js: rows addImg", rows);
         res.json(rows[0])
     }).catch((err) => {
         console.log("error in addImage /upload", err);
         res.sendStatus(500);
     });
-
    });
+
+//---- GET modal/:id ---- for modal
+app.get("/modal/:id", );
 
 //---- GET *
 app.get('*', (req, res) => {// star route is the only route that will serve stuff in our project
