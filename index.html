@@ -28,10 +28,14 @@
         <section v-for="img in images" :key="img.id" class="img-grid">
             <div class="one-img" @click="openModal(img.id)">
                 <img class="one-img" :src="img.url" :alt="img.title">
-                <p class="img-title">{{img.title}}</p>
+                <p class="img-title">{{img.id}}: {{img.title}}</p>
             </div>
         </section>
         
+        <button v-if="isThereMore">More</button>
+
+
+
         <img-modal v-if="imgId" :img-id="imgId" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>
         
     </main>

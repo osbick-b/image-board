@@ -77,14 +77,20 @@ app.get("/images/:id", (req, res) => {
 });
 
 //---- GET --- modal deleteImg
-app.get("/images/:id/delete", (req, res) => {
-    db.deleteImg(req.params.id)
+app.post("/images/:id/delete", (req, res) => {
+    console.log("in /POST delete: req.body", req.body);
+    // const parsedBody = JSON.parse(req.body);
+    // console.log("parsedBody", parsedBody);
+    console.log("req.body.imgId", req.body.imgId);
+    db.deleteImg(req.body.imgId)
         .then(() => {
-            console.log("req.params.id", req.params.id);
-            res.send(req.params.id);
+            return db.getImages();
+        }).then(({ rows }) => {
+            console.log("--> in server.js -- from DB getImages WO deleted img: rows", rows);
+            res.json(rows);
         })
         .catch((err) => {
-            console.log("error in server.js -- db.getModalImg", err);
+            console.log("error in server.js -- db.deleteImg", err);
         });
 });
 

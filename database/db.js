@@ -12,6 +12,7 @@ module.exports.getImages = () => {
     return db.query(`
     SELECT * FROM images
     ORDER BY id DESC
+    LIMIT 4
     `);
 };
 

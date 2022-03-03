@@ -10,6 +10,7 @@ const app = Vue.createApp({
             description: "",
             images: [],
             imgId: 0,
+            isThereMore: true,
         };
     },
     components: {
@@ -20,11 +21,10 @@ const app = Vue.createApp({
     },
     mounted: function () {
         fetch("/images.json") // ------- ??? ------ where does it exist???
-            .then((resp) => resp.json()) // ------- return ommitted -- w/o {}
+            .then((resp) => resp.json()) // --- !!! --- return ommitted -- w/o {}
             .then((data) => {
-                console.log("data", data);
+                // console.log("data", data);
                 this.images = data;
-                console.log("this.images", this.images);
             })
             .catch((err) => {
                 console.log("error in app.js - mounted:fetch", err);
@@ -37,7 +37,9 @@ const app = Vue.createApp({
         },
         openModal: function (id) {
             // +++ cond test if id exists
+            // for condit: maybe do the fetch request here instead of in the component? to test if id is in database
             this.imgId = id;
+            console.log("this.imgId", this.imgId);
         },
         selectFile: function (e) {
             this.file = e.target.files[0];
@@ -64,14 +66,17 @@ const app = Vue.createApp({
         },
         deleteImg: function () {
             // +++ add confirmation screen
-            fetch(`/images/${this.imgId}/delete`)
-                .then(() => {
-                    // console.log("in app: img was deleted",resp); // no need to do anything with the response
-                    console.log("this.imgId", this.imgId);
-                    console.log("this.images", this.images[0]);
-                    const delId = this.images.findIndex((element) => element.id == this.imgid); // ??? why doesnt it work??
-                    console.log("delId", delId);
-                    // this.images.splice(delId,1);
+            fetch(`/images/${this.imgId}/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ imgId: this.imgId }),
+            })
+                .then((resp) => resp.json())
+                .then((data) => {
+                    // console.log("img was deleted"); // --- use this as visib to add conditional in opening modal: cmmt out >> this.images = data
+                    this.images = data;
                     this.closeModal();
                 })
                 .catch((err) => {
