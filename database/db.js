@@ -49,9 +49,36 @@ module.exports.getImagesAllSoFar = (lastLoadedId) => {
     );
 };
 
-module.exports.getModalImg = (imgId) => {
-    return db.query(`SELECT * FROM images WHERE id = $1`, [imgId]);
+module.exports.getModalData = (imgId) => {
+    return db.query(
+        `SELECT images.* , comments.username AS "commUser", comments.comment, comments.created_at AS "commTimestamp"
+    FROM images 
+    LEFT JOIN comments
+    ON images.id = comments.img_id
+    WHERE images.id = $1
+    ORDER BY id DESC`,
+        [imgId]
+    );
 };
+
+module.exports.postComment = (imgId, username, comment) => {
+    return db.query(
+        `INSERT INTO comments (img_id, username, comment) 
+        VALUES ($1, $2, $3)
+        RETURNING *`,
+         [imgId, username, comment]
+    );
+};
+
+// module.exports.getImgComments = (imgId) => {
+//     return db.query(
+//         `SELECT comments.username AS "commUser", comments.comment, comments.img_id comments.created_at AS "commTimestamp"
+//         FROM comments
+//         WHERE img_id = $1
+//         ORDER BY id DESC`,
+//         [imgId]
+//     );
+// };
 
 module.exports.addImage = (title, description, username, url) => {
     return db.query(

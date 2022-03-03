@@ -13,6 +13,11 @@ const app = Vue.createApp({
             isThereMore: null,
             lastLoadedId: 0,
             finalImgId: 0,
+            cm: {
+                username: "",
+                imgId: 0,
+                comment: "",
+            },
         };
     },
     components: {
@@ -46,22 +51,44 @@ const app = Vue.createApp({
         selectFile: function (e) {
             this.file = e.target.files[0];
         },
-        updateLastLoadedFinal: function(data) {
+        updateLastLoadedFinal: function (data) {
             this.finalImgId = data[0].finalImgId;
             this.lastLoadedId = data[data.length - 1].id;
-            this.isThereMore = this.lastLoadedId <= this.finalImgId?  false : true;
+            this.isThereMore =
+                this.lastLoadedId <= this.finalImgId ? false : true;
         },
-        loadMoreImages: function() {
+        loadMoreImages: function () {
             console.log(">> want to load more images");
-            fetch(`/images/more/${this.lastLoadedId}`).then((resp) => resp.json())
-            .then((data) => {
-                this.images = [...this.images, ...data];
-                this.updateLastLoadedFinal(data);
+            fetch(`/images/more/${this.lastLoadedId}`)
+                .then((resp) => resp.json())
+                .then((data) => {
+                    this.images = [...this.images, ...data];
+                    this.updateLastLoadedFinal(data);
+                })
+                .catch((err) => {
+                    console.log("error in app.js -- loadMoreImages", err);
+                });
+        },
+        postComment: function (e) {
+            const fd = new FormData();
+            fd.append("file", this.file);
+            fd.append("title", this.title);
+            fd.append("username", this.username);
+            fd.append("description", this.description);
+            fetch("/upload.json", {
+                method: "POST",
+                body: this.cm,
             })
-            .catch((err) => {
-                console.log("error in app.js -- loadMoreImages", err);
-            });
-        } ,
+                .then((resp) => {
+                    return resp.json();
+                })
+                .then((data) => {
+                    return this.images.unshift(data);
+                })
+                .catch((err) => {
+                    console.log("error in /upload", err);
+                });
+        },
         uploadImg: function (e) {
             const fd = new FormData();
             fd.append("file", this.file);
@@ -89,7 +116,10 @@ const app = Vue.createApp({
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ imgId: this.imgId, lastLoadedId: this.lastLoadedId }),
+                body: JSON.stringify({
+                    imgId: this.imgId,
+                    lastLoadedId: this.lastLoadedId,
+                }),
             })
                 .then((resp) => resp.json())
                 .then((data) => {

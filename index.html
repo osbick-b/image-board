@@ -34,6 +34,23 @@
         
         <button v-if="isThereMore" @click="loadMoreImages">More</button>
 
+        
+        
+<!-- temporary for testing: -->
+<!-- <section id="comment">
+    <form>
+        <labelmodel="title" type="text" name="title" id="title">
+            <label for="username">username</label>
+            <input v-model="cm.username" type="text" name="username" id="username">
+            <label for="comment">comment</label>
+            <input v-model="cm.comment" type="text" name="comment" id="comment">
+            <button @click.prevent.default="postComment">post comment</button>
+        </form>
+    </section> -->
+    <!-- temporary for testing: -->
+
+
+
 
 
         <img-modal v-if="imgId" :img-id="imgId" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>

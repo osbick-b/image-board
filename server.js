@@ -50,7 +50,10 @@ app.get("/images.json", (req, res) => {
 
 //---- GET /images/MORE
 app.get("/images/more/:lastLoadedId", (req, res) => {
-    console.log("on GET/moreImages -- req.params.lastLoadedId", req.params.lastLoadedId);
+    console.log(
+        "on GET/moreImages -- req.params.lastLoadedId",
+        req.params.lastLoadedId
+    );
     db.getMoreImages(req.params.lastLoadedId).then(({ rows }) => {
         console.log("rows", rows);
         res.json(rows);
@@ -74,15 +77,29 @@ app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 
-//---- GET modal/:id ---- img for modal
+//---- POST comment
+app.post("/images/:id/comment", (req, res) => {
+    db.postComment(req.params.id, req.body.username, req.body.comment)
+    .then(({ rows }) => {
+        console.log("rows from postComment", rows);
+        return res.json(rows);
+    })
+        .catch((err) => {
+            console.log("error in server.js -- /POST comment", err);
+        });
+});
+
+//---- GET modal/:id ---- img and comments for modal
 app.get("/images/:id", (req, res) => {
-    db.getModalImg(req.params.id)
+    // +++ change db.query to retrieve info related to this img as well
+    db.getModalData(req.params.id)
         .then(({ rows }) => {
+            console.log("SERVER --- resp from getModalData: rows", rows);
             res.json(rows[0]);
         })
         // --- +++ --- should add here the db.query to get comments i think
         .catch((err) => {
-            console.log("error in server.js -- db.getModalImg", err);
+            console.log("error in server.js -- db.getModalData", err);
         });
 });
 
@@ -91,7 +108,8 @@ app.post("/images/:id/delete", (req, res) => {
     db.deleteImg(req.body.imgId)
         .then(() => {
             return db.getImagesAllSoFar(req.body.lastLoadedId);
-        }).then(({ rows }) => {
+        })
+        .then(({ rows }) => {
             res.json(rows);
         })
         .catch((err) => {
