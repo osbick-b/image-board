@@ -13,41 +13,36 @@ const app = Vue.createApp({
         };
     },
     components: {
-        "img-modal": imgModal,
+        "img-modal": imgModal, // --- registered component
     },
     updated: function () {
         console.log("app has been updated");
     },
     mounted: function () {
-        console.log("app has been mounted");
         fetch("/images.json") // ------- ??? ------ where does it exist???
-            .then((resp) => resp.json())
+            .then((resp) => resp.json()) // ------- return ommitted -- w/o {}
             .then((data) => {
                 console.log("data", data);
                 this.images = data;
+                console.log("this.images", this.images);
             })
             .catch((err) => {
-                console.log("error in mounted:fetch", err);
+                console.log("error in app.js - mounted:fetch", err);
             });
     },
     methods: {
-        closeModal: function() {
+        closeModal: function () {
             // console.log("-- ok child, i heard ya. gonna close modal");
             this.imgId = 0;
         },
-        openModal: function(id) {
-            console.log(">> Wants to open modal");
-            console.log("img arg", id);
+        openModal: function (id) {
+            // +++ cond test if id exists
             this.imgId = id;
-            fetch("/images/:id")
         },
         selectFile: function (e) {
-            // console.log(">>> user selected file");
             this.file = e.target.files[0];
         },
         uploadImg: function (e) {
-            console.log(">>> user wants to upload stuff");
-
             const fd = new FormData();
             fd.append("file", this.file);
             fd.append("title", this.title);
@@ -61,14 +56,29 @@ const app = Vue.createApp({
                     return resp.json();
                 })
                 .then((resp) => {
-                    console.log("resp in fetch /upload", resp);
                     return this.images.unshift(resp);
                 })
                 .catch((err) => {
                     console.log("error in /upload", err);
                 });
         },
+        deleteImg: function () {
+            // +++ add confirmation screen
+            fetch(`/images/${this.imgId}/delete`)
+                .then(() => {
+                    // console.log("in app: img was deleted",resp); // no need to do anything with the response
+                    console.log("this.imgId", this.imgId);
+                    console.log("this.images", this.images[0]);
+                    const delId = this.images.findIndex((element) => element.id == this.imgid); // ??? why doesnt it work??
+                    console.log("delId", delId);
+                    // this.images.splice(delId,1);
+                    this.closeModal();
+                })
+                .catch((err) => {
+                    console.log("error in app: deleteImg", err);
+                });
+        },
     },
-}); // us creating a vue application
+});
 
 app.mount("#main"); // THIS IS ESSENTIAL, OTHERWISE THE APP WON'T MOUNT

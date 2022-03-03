@@ -32,7 +32,7 @@
             </div>
         </section>
         
-        <img-modal v-if="imgId" :img-id="imgId" @clickedx="closeModal"></img-modal>
+        <img-modal v-if="imgId" :img-id="imgId" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>
         
     </main>
     <script src="/js/app.js" type="module" crossorigin="use-credentials"></script>
