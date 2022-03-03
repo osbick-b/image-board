@@ -40,10 +40,30 @@ LIMIT 10`,
 // for that you need another small SUBquery on the side, to get the very lowest id on the db
 
 SELECT url, title, id, (
-    SELECT id FROM images // ---> subquery
-    ORDER BY id ASC
+    SELECT id FROM images 
+    ORDER BY id ASC // ---> subquery --> gets the LOWEST id in db: that is, the oldest and last img
     LIMIT 1 // -- getting 1 value: the 1st
 ) AS "lowestId" FROM images
 WHERE id < $1
 ORDER BY id DESC
 LIMIT 10;
+
+
+// SUBQUERIES 
+// --- ASC = the very lowest (last/oldest img)
+    SELECT id FROM images 
+    ORDER BY id ASC
+    LIMIT 1
+
+// --- DESC = the very highest (first/most recent img)
+    SELECT id FROM images 
+    ORDER BY id DESC
+    LIMIT 1
+
+
+
+// SELECT *, (SELECT id FROM images
+// ORDER BY id ASC
+// LIMIT 1) AS "finalImgId" FROM images
+// ORDER BY id DESC
+// LIMIT 4

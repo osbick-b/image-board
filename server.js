@@ -43,8 +43,17 @@ app.use((req, res, next) => {
 
 //---- GET /images.json
 app.get("/images.json", (req, res) => {
-    db.getImages().then((rows) => {
-        res.json(rows.rows);
+    db.getImages().then(({ rows }) => {
+        res.json(rows);
+    });
+});
+
+//---- GET /images/MORE
+app.get("/images/more/:lastLoadedId", (req, res) => {
+    console.log("on GET/moreImages -- req.params.lastLoadedId", req.params.lastLoadedId);
+    db.getMoreImages(req.params.lastLoadedId).then(({ rows }) => {
+        console.log("rows", rows);
+        res.json(rows);
     });
 });
 
@@ -65,28 +74,24 @@ app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 
-//---- GET modal/:id ---- for modal
+//---- GET modal/:id ---- img for modal
 app.get("/images/:id", (req, res) => {
     db.getModalImg(req.params.id)
         .then(({ rows }) => {
             res.json(rows[0]);
         })
+        // --- +++ --- should add here the db.query to get comments i think
         .catch((err) => {
             console.log("error in server.js -- db.getModalImg", err);
         });
 });
 
-//---- GET --- modal deleteImg
+//---- POST --- modal deleteImg
 app.post("/images/:id/delete", (req, res) => {
-    console.log("in /POST delete: req.body", req.body);
-    // const parsedBody = JSON.parse(req.body);
-    // console.log("parsedBody", parsedBody);
-    console.log("req.body.imgId", req.body.imgId);
     db.deleteImg(req.body.imgId)
         .then(() => {
-            return db.getImages();
+            return db.getImagesAllSoFar(req.body.lastLoadedId);
         }).then(({ rows }) => {
-            console.log("--> in server.js -- from DB getImages WO deleted img: rows", rows);
             res.json(rows);
         })
         .catch((err) => {

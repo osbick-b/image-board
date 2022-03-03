@@ -10,7 +10,9 @@ const app = Vue.createApp({
             description: "",
             images: [],
             imgId: 0,
-            isThereMore: true,
+            isThereMore: null,
+            lastLoadedId: 0,
+            finalImgId: 0,
         };
     },
     components: {
@@ -23,7 +25,7 @@ const app = Vue.createApp({
         fetch("/images.json") // ------- ??? ------ where does it exist???
             .then((resp) => resp.json()) // --- !!! --- return ommitted -- w/o {}
             .then((data) => {
-                // console.log("data", data);
+                this.updateLastLoadedFinal(data);
                 this.images = data;
             })
             .catch((err) => {
@@ -44,6 +46,22 @@ const app = Vue.createApp({
         selectFile: function (e) {
             this.file = e.target.files[0];
         },
+        updateLastLoadedFinal: function(data) {
+            this.finalImgId = data[0].finalImgId;
+            this.lastLoadedId = data[data.length - 1].id;
+            this.isThereMore = this.lastLoadedId <= this.finalImgId?  false : true;
+        },
+        loadMoreImages: function() {
+            console.log(">> want to load more images");
+            fetch(`/images/more/${this.lastLoadedId}`).then((resp) => resp.json())
+            .then((data) => {
+                this.images = [...this.images, ...data];
+                this.updateLastLoadedFinal(data);
+            })
+            .catch((err) => {
+                console.log("error in app.js -- loadMoreImages", err);
+            });
+        } ,
         uploadImg: function (e) {
             const fd = new FormData();
             fd.append("file", this.file);
@@ -57,8 +75,8 @@ const app = Vue.createApp({
                 .then((resp) => {
                     return resp.json();
                 })
-                .then((resp) => {
-                    return this.images.unshift(resp);
+                .then((data) => {
+                    return this.images.unshift(data);
                 })
                 .catch((err) => {
                     console.log("error in /upload", err);
@@ -71,11 +89,12 @@ const app = Vue.createApp({
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ imgId: this.imgId }),
+                body: JSON.stringify({ imgId: this.imgId, lastLoadedId: this.lastLoadedId }),
             })
                 .then((resp) => resp.json())
                 .then((data) => {
-                    // console.log("img was deleted"); // --- use this as visib to add conditional in opening modal: cmmt out >> this.images = data
+                    console.log("img was deleted"); // --- use this as visib to add conditional in opening modal: cmmt out >> this.images = data
+                    this.updateLastLoadedFinal(data);
                     this.images = data;
                     this.closeModal();
                 })

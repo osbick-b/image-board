@@ -9,17 +9,48 @@ const db = spicedPg(
 // ========== QUERIES ========== //
 
 module.exports.getImages = () => {
-    return db.query(`
-    SELECT * FROM images
-    ORDER BY id DESC
-    LIMIT 4
-    `);
+    // the very 1st load. retrieves from the end of DB
+    return db.query(
+        `SELECT *, 
+            (SELECT id FROM images
+            ORDER BY id ASC
+            LIMIT 1) AS "finalImgId" 
+        FROM images
+        ORDER BY id DESC
+        LIMIT 4`
+    );
+};
+
+module.exports.getMoreImages = (lastLoadedId) => {
+    return db.query(
+        `SELECT *, 
+            (SELECT id FROM images
+            ORDER BY id ASC
+            LIMIT 1) AS "finalImgId" 
+        FROM images 
+        WHERE id < $1
+        ORDER BY id DESC
+        LIMIT 4`,
+        [lastLoadedId]
+    );
+};
+
+// --- +++ --- query to get all imgs loaded so far fot case of deleting img
+module.exports.getImagesAllSoFar = (lastLoadedId) => {
+    return db.query(
+        `SELECT *, 
+            (SELECT id FROM images
+            ORDER BY id ASC
+            LIMIT 1) AS "finalImgId" 
+        FROM images
+        WHERE id >= $1
+        ORDER BY id DESC`,
+        [lastLoadedId]
+    );
 };
 
 module.exports.getModalImg = (imgId) => {
-    return db.query(
-        `SELECT * FROM images WHERE id = $1`, 
-        [imgId]);
+    return db.query(`SELECT * FROM images WHERE id = $1`, [imgId]);
 };
 
 module.exports.addImage = (title, description, username, url) => {
@@ -32,8 +63,6 @@ module.exports.addImage = (title, description, username, url) => {
 };
 
 module.exports.deleteImg = (imgId) => {
-    return db.query(
-        `DELETE FROM images WHERE id = $1`,
-        [imgId]
-    );
+    // console.log("DB -- deleteImg");
+    return db.query(`DELETE FROM images WHERE id = $1`, [imgId]);
 };
