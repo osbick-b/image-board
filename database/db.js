@@ -57,13 +57,21 @@ module.exports.getImagesAllSoFar = (lastLoadedId) => {
     );
 };
 
-module.exports.getModalData = (imgId) => {
+module.exports.getImgData = (imgId) => {
     return db.query(
-        `SELECT images.* , comments.username AS "commUser", comments.comment, comments.created_at AS "commTimestamp"
+        `SELECT *
     FROM images 
-    LEFT JOIN comments
-    ON images.id = comments.img_id
     WHERE images.id = $1
+    ORDER BY id DESC`,
+        [imgId]
+    );
+};
+
+module.exports.getComments = (imgId) => {
+    return db.query(
+        `SELECT *
+    FROM comments
+    WHERE img_id = $1
     ORDER BY id DESC`,
         [imgId]
     );

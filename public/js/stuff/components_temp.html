@@ -19,10 +19,12 @@
 
 
 
-<section id="comments">
-    <h6 class="username">{{currImgStuff.}}</h6>
-    <p class="one-comment">{{currImgStuff.}}</p>
-    <p class="comment date">{{currImgStuff.}}</p>
+<section id="comments" v-for="comm in comments">
+    <div class="one-comment">
+        <h6 class="username">{{currImgStuff.}}</h6>
+        <p class="commment text">{{currImgStuff.}}</p>
+        <p class="comment date">{{currImgStuff.}}</p>
+    </div>
 </section>
 
 

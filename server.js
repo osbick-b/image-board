@@ -104,20 +104,31 @@ app.get("/evalUrl/:customUrl", (req,res) => {
     // });
 });
 
-//---- GET modal/:id ---- img and comments for modal
+
+//---- GET modal/:id ---- img for modal
 app.get("/images/:id", (req, res) => {
-    // console.log("in server.js -- getModalData", req.params.id);
-    // +++ change db.query to retrieve info related to this img as well
-    db.getModalData(req.params.id)
+    db.getImgData(req.params.id)
         .then(({ rows }) => {
-            console.log("SERVER --- resp from getModalData: rows", rows);
             res.json(rows[0]);
         })
-        // --- +++ --- should add here the db.query to get comments i think
         .catch((err) => {
-            console.log("error in server.js -- db.getModalData", err);
+            console.log("error in server.js -- db.getImgData", err);
         });
 });
+
+
+//---- GET comments ---- img and comments for modal
+app.get("/images/:id/comments", (req, res) => {
+    db.getComments(req.params.id)
+        .then(({ rows }) => {
+            console.log("SERVER --- resp from getComments: rows", rows); //// OK UNTIL HERE
+            res.json(rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in server.js -- db.getImgData", err);
+        });
+});
+
 
 //---- POST --- modal deleteImg
 app.post("/images/:id/delete", (req, res) => {
