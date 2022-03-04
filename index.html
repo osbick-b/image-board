@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>ImageBoard</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.ico">
 </head>
 <body>
     <main id="main">
@@ -25,14 +26,17 @@
             </form>
         </section>
         
-        <section v-for="img in images" :key="img.id" class="img-grid">
-            <div class="one-img" @click="openModal(img.id)">
-                <img class="one-img" :src="img.url" :alt="img.title">
-                <p class="img-title">{{img.id}}: {{img.title}}</p>
+        <!-- ??? do i really need this one extra div where the loop runs? is there any other way of doing it?  -->
+        <section  id="img-grid">
+            <div v-for="img in images" :key="img.id">
+                <div class="one-img" @click="openModal(img.id)">
+                    <img class="one-img" :src="img.url" :alt="img.title">
+                    <p class="img-title">{{img.id}}: {{img.title}}</p>
+                </div>
             </div>
         </section>
         
-        <button v-if="isThereMore" @click="loadMoreImages">More</button>
+        <button class="more" v-if="isThereMore" @click="loadMoreImages">More</button>
 
         
         
@@ -53,7 +57,7 @@
 
 
 
-        <img-modal v-if="imgId" :img-id="imgId" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>
+        <img-modal v-if="imgIdP" :img-id-c="imgIdP" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>
         
     </main>
     <script src="/js/app.js" type="module" crossorigin="use-credentials"></script>

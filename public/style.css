@@ -5,26 +5,49 @@
 
 body {
     background-color: #7b68ee;
-    position: relative;
+    /* here as content loads in main#main, our setup should be there. 
+    in body it wasn't working very well bc content is rendered dinamically  */
 }
 
 :root {
     --main-bg-color: pink;
+    --btn-plain-bg: white;
+    --section-bg: none;
 }
 
 main#main {
+    /* this is our outer main container for this proj */
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid indigo;
+    /* justify-content: center; */
 }
 
 section {
+    border: 1px solid yellow;
     width: 90%;
     margin: 5vh auto;
 }
+
+
+
 /*////////// HEADER //////////*/
-#main-header {}
+header#main-header {
+    width: 100%;
+    background-color: var(--section-bg);
+    padding: 3vh 5vw;
+}
 
-.logo {}
+.logo {
+}
 
-/*/ /////////  //////////*/
+
+/*////////// UPLOAD SECTION //////////*/
+
 section#upload {
 }
 
@@ -34,15 +57,13 @@ input.upload {
 label.upload {
 }
 
-/*////////// UPLOAD SECTION //////////*/
-
 /*/ ///////// IMAGE GRID //////////*/
 
-section.img-grid {
+section#img-grid {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 1vw;
-    place-items:center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3vw;
+    place-items: center;
 }
 
 .one-img {
@@ -54,6 +75,16 @@ section.img-grid {
 .img-title {
 }
 
+.more {
+    height: 10vw;
+    width: 10vw;
+    border-radius: 50%;
+    background-color: var(--btn-plain-bg);
+    border: none;
+    position: absolute;
+    bottom: 3vh;
+    margin: 0 auto;
+}
 
 /*/ ///////// MODAL //////////*/
 
@@ -74,4 +105,3 @@ section.img-grid {
     width: 80%;
     background-color: var(--main-bg-color);
 }
-

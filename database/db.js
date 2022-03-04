@@ -8,6 +8,14 @@ const db = spicedPg(
 
 // ========== QUERIES ========== //
 
+module.exports.evalUrl = (customUrl) => {
+    return db.query(
+        `SELECT id AS "validImgId" FROM images
+        WHERE id = $1`,
+        [customUrl]
+    );
+};
+
 module.exports.getImages = () => {
     // the very 1st load. retrieves from the end of DB
     return db.query(

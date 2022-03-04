@@ -9,13 +9,13 @@ const app = Vue.createApp({
             username: "",
             description: "",
             images: [],
-            imgId: 0,
+            imgIdP: 0,
             isThereMore: null,
             lastLoadedId: 0,
             finalImgId: 0,
             cm: {
                 username: "",
-                imgId: 0,
+                imgIdP: 0,
                 comment: "",
             },
         };
@@ -27,6 +27,7 @@ const app = Vue.createApp({
         console.log("app has been updated");
     },
     mounted: function () {
+        this.evalCustomUrl();
         fetch("/images.json") // ------- ??? ------ where does it exist???
             .then((resp) => resp.json()) // --- !!! --- return ommitted -- w/o {}
             .then((data) => {
@@ -38,15 +39,49 @@ const app = Vue.createApp({
             });
     },
     methods: {
+
+
+        evalCustomUrl: function () {
+            ////////////// ---- history stuff testing area
+            // evaluation of url will happen when app 1st mounts, if user is trying to access it from a different url than ROOT
+            let customUrl = location.pathname.slice(1);
+            if (customUrl !== "") {
+                console.log(">> user typed custom URL!");
+                //  ---> eval if url is a valid id
+                fetch(`/evalUrl/${customUrl}`)
+                    .then((resp) => resp.json())
+                    .then(({ validImgId }) => {
+                        console.log(
+                            "app.js AFTER -- from evalUrl: resp",
+                            validImgId
+                        );
+                        if (validImgId) {
+                            console.log("id is valid");
+                            this.openModal(validImgId);
+
+                            // history.pushState({}, "", `/images/${validImgId}`);
+                        } else {
+                            console.log("id NOT valid");
+                            history.replaceState({}, "", "/"); // replace invalid url in browsing history
+                        }
+                    })
+                    .catch((err) => {
+                        console.log("error in app.js -- evalCustomUrl", err);
+                    });
+            }
+            console.log("location.pathname ", location.pathname); // ---> as of now, returns "/"
+            ////////////// ---- end of history stuff area
+        },
         closeModal: function () {
             // console.log("-- ok child, i heard ya. gonna close modal");
-            this.imgId = 0;
+        history.pushState({}, "", "/");
+            this.imgIdP = 0;
         },
         openModal: function (id) {
             // +++ cond test if id exists
             // for condit: maybe do the fetch request here instead of in the component? to test if id is in database
-            this.imgId = id;
-            console.log("this.imgId", this.imgId);
+            this.imgIdP = id;
+            console.log("this.imgIdP", this.imgIdP);
         },
         selectFile: function (e) {
             this.file = e.target.files[0];
@@ -111,13 +146,13 @@ const app = Vue.createApp({
         },
         deleteImg: function () {
             // +++ add confirmation screen
-            fetch(`/images/${this.imgId}/delete`, {
+            fetch(`/images/${this.imgIdP}/delete`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    imgId: this.imgId,
+                    imgIdP: this.imgIdP,
                     lastLoadedId: this.lastLoadedId,
                 }),
             })
