@@ -38,7 +38,10 @@
         
         <button class="more" v-if="isThereMore" @click="loadMoreImages">More</button>
 
-        
+
+        <!-- ----------- Image Modal ------------- -->
+        <img-modal v-if="imgIdP" :img-id-c="imgIdP" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>
+
         
 <!-- temporary for testing: -->
 <!-- <section id="comment">
@@ -52,13 +55,6 @@
         </form>
     </section> -->
     <!-- temporary for testing: -->
-
-
-
-
-
-        <img-modal v-if="imgIdP" :img-id-c="imgIdP" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>
-        
     </main>
     <script src="/js/app.js" type="module" crossorigin="use-credentials"></script>
 </body>

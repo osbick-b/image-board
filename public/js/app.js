@@ -1,5 +1,5 @@
 import * as Vue from "./vue.js";
-import imgModal from "./components.js";
+import imgModal from "./comp_modal.js";
 
 const app = Vue.createApp({
     data() {
@@ -25,9 +25,11 @@ const app = Vue.createApp({
     },
     updated: function () {
         console.log("app has been updated");
+        // this.evalUrl();
     },
     mounted: function () {
-        this.evalCustomUrl();
+        this.evalUrl();
+        // history.pushState({}, "", "/");
         fetch("/images.json") // ------- ??? ------ where does it exist???
             .then((resp) => resp.json()) // --- !!! --- return ommitted -- w/o {}
             .then((data) => {
@@ -39,15 +41,11 @@ const app = Vue.createApp({
             });
     },
     methods: {
-
-
-        evalCustomUrl: function () {
-            ////////////// ---- history stuff testing area
-            // evaluation of url will happen when app 1st mounts, if user is trying to access it from a different url than ROOT
+        evalUrl: function () {
             let customUrl = location.pathname.slice(1);
+            // evaluation of url will happen when app 1st mounts, if user is trying to access it from a different url than ROOT
             if (customUrl !== "") {
-                console.log(">> user typed custom URL!");
-                //  ---> eval if url is a valid id
+                console.log(">> user typed custom URL!", customUrl);
                 fetch(`/evalUrl/${customUrl}`)
                     .then((resp) => resp.json())
                     .then(({ validImgId }) => {
@@ -58,23 +56,19 @@ const app = Vue.createApp({
                         if (validImgId) {
                             console.log("id is valid");
                             this.openModal(validImgId);
-
-                            // history.pushState({}, "", `/images/${validImgId}`);
                         } else {
                             console.log("id NOT valid");
                             history.replaceState({}, "", "/"); // replace invalid url in browsing history
                         }
                     })
                     .catch((err) => {
-                        console.log("error in app.js -- evalCustomUrl", err);
+                        console.log("error in app.js -- evalUrl", err);
                     });
             }
-            console.log("location.pathname ", location.pathname); // ---> as of now, returns "/"
-            ////////////// ---- end of history stuff area
         },
         closeModal: function () {
             // console.log("-- ok child, i heard ya. gonna close modal");
-        history.pushState({}, "", "/");
+            history.pushState({}, "", "/");
             this.imgIdP = 0;
         },
         openModal: function (id) {
@@ -171,3 +165,9 @@ const app = Vue.createApp({
 });
 
 app.mount("#main"); // THIS IS ESSENTIAL, OTHERWISE THE APP WON'T MOUNT
+
+addEventListener("popstate", (e) => {
+    console.log(location.pathname, e.state);
+    // show whatever is appropriate for the new url
+    // if you need it, e.state has the data you passed to `pushState`
+});

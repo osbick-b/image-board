@@ -91,21 +91,22 @@ app.post("/images/:id/comment", (req, res) => {
 
 // ---- GET evalUrl
 app.get("/evalUrl/:customUrl", (req,res) => {
+    console.log(
+        "in server.js -- evalUrl: req.params.url",
+        req.params.customUrl
+    );
     db.evalUrl(req.params.customUrl).then(({ rows }) => {
-        console.log(
-            "in server.js -- evalUrl: req.params.url",
-            req.params.customUrl
-        );
-        console.log("in server.js -- evalUrl: rows", rows);
-        return res.json(rows[0]);
-    }).catch((err) => {
-        console.log("error in server.js -- /GET evalUrl", err);
-    });
+        console.log("in server.js -- FROM DB evalUrl: rows", rows);
+        return res.json(rows[0]?rows[0]:"salgadinho");
+    })
+    // .catch((err) => {
+    //     console.log("error in server.js -- /GET evalUrl", err);
+    // });
 });
 
 //---- GET modal/:id ---- img and comments for modal
 app.get("/images/:id", (req, res) => {
-    console.log("in server.js -- getModalData", req.params.id);
+    // console.log("in server.js -- getModalData", req.params.id);
     // +++ change db.query to retrieve info related to this img as well
     db.getModalData(req.params.id)
         .then(({ rows }) => {
