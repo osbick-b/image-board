@@ -1,4 +1,4 @@
-import comments from "./comp_comments.js";
+import comments from "./comments.js";
 
 
 // =============== Image Modal ================ //
@@ -8,7 +8,7 @@ const imgModal = {
         return {
             name: "imgModal",
             emoji: "🥗",
-            currImgStuff: {},
+            currImg: {},
             imgIdP: this.imgIdC,
         };
     },
@@ -28,11 +28,7 @@ const imgModal = {
                 return resp.json();
             })
             .then((data) => {
-                this.currImgStuff = data;
-                console.log(
-                    "in modal.js --- this.currImgStuff",
-                    this.currImgStuff
-                );
+                this.currImg = data;
             })
             .catch((err) => {
                 console.log("error in components.js - mounted: fetch", err);
@@ -51,9 +47,9 @@ const imgModal = {
     <main class="img-modal bg">
         <div class="container">
             <button @click="askToClose"  class="btn-close">X</button>
-            <img class="one-img" :src="this.currImgStuff.url" alt="this.currImgStuff.title">
-            <h3 class="img-title">{{this.currImgStuff.id}}{{this.currImgStuff.title}}</h3>
-            <p class="img-description">{{this.currImgStuff.description}}</p>
+            <img class="one-img" :src="this.currImg.url" alt="this.currImg.title">
+            <h3 class="img-title">{{this.currImg.id}}{{this.currImg.title}}</h3>
+            <p class="img-description">{{this.currImg.description}}</p>
             
             <comments :img-id-c="imgIdP"></comments>
 

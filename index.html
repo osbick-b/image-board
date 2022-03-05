@@ -17,11 +17,11 @@
                 <label for="title">title</label>
                 <input v-model="title" type="text" name="title" id="title">
                 <label for="username">username</label>
-                <input v-model="username" type="text" name="username" id="username">
+                <input v-model="username" type="text" name="username" id="username" required="required">
                 <label for="description">description</label>
                 <input v-model="description" type="text" name="description" id="description">
                 <label for="file">file</label>
-                <input @change="selectFile" type="file" name="file" id="file" accept="image/*">
+                <input @change="selectFile" type="file" name="file" id="file" accept="image/*" required="required">
                 <button @click.prevent.default="uploadImg">Upload</button>
             </form>
         </section>

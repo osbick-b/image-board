@@ -1,5 +1,5 @@
 import * as Vue from "./vue.js";
-import imgModal from "./comp_modal.js";
+import imgModal from "./modal.js";
 
 const app = Vue.createApp({
     data() {
@@ -96,26 +96,6 @@ const app = Vue.createApp({
                 })
                 .catch((err) => {
                     console.log("error in app.js -- loadMoreImages", err);
-                });
-        },
-        postComment: function (e) {
-            const fd = new FormData();
-            fd.append("file", this.file);
-            fd.append("title", this.title);
-            fd.append("username", this.username);
-            fd.append("description", this.description);
-            fetch("/upload.json", {
-                method: "POST",
-                body: this.cm,
-            })
-                .then((resp) => {
-                    return resp.json();
-                })
-                .then((data) => {
-                    return this.images.unshift(data);
-                })
-                .catch((err) => {
-                    console.log("error in /upload", err);
                 });
         },
         uploadImg: function (e) {

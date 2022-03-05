@@ -71,22 +71,10 @@ app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
         .then(({ rows }) => {
             res.json(rows[0]);
         })
-        .catch((err) => {
-            console.log("error in addImage /upload", err);
-            res.sendStatus(500);
-        });
-});
-
-//---- POST comment
-app.post("/images/:id/comment", (req, res) => {
-    db.postComment(req.params.id, req.body.username, req.body.comment)
-    .then(({ rows }) => {
-        console.log("rows from postComment", rows);
-        return res.json(rows);
-    })
-        .catch((err) => {
-            console.log("error in server.js -- /POST comment", err);
-        });
+        // .catch((err) => {
+        //     console.log("error in addImage /upload", err);
+        //     res.sendStatus(500);
+        // });
 });
 
 // ---- GET evalUrl
@@ -105,28 +93,40 @@ app.get("/evalUrl/:customUrl", (req,res) => {
 });
 
 
-//---- GET modal/:id ---- img for modal
+//---- POST comment
+app.post("/images/:id/comment", (req, res) => {
+    db.postComment(req.params.id, req.body.username, req.body.comment)
+    .then(({ rows }) => {
+        console.log("rows from postComment", rows);
+        return res.json(rows);
+    })
+        // .catch((err) => {
+        //     console.log("error in server.js -- /POST comment", err);
+        // });
+});
+
+//---- GET img modal/:id ---- img for modal
 app.get("/images/:id", (req, res) => {
-    db.getImgData(req.params.id)
+    db.getImg(req.params.id)
         .then(({ rows }) => {
             res.json(rows[0]);
         })
-        .catch((err) => {
-            console.log("error in server.js -- db.getImgData", err);
-        });
+        // .catch((err) => {
+        //     console.log("error in server.js -- db.getImg", err);
+        // });
 });
 
 
-//---- GET comments ---- img and comments for modal
+//---- GET comments ---- comments for modal
 app.get("/images/:id/comments", (req, res) => {
     db.getComments(req.params.id)
         .then(({ rows }) => {
             console.log("SERVER --- resp from getComments: rows", rows); //// OK UNTIL HERE
-            res.json(rows[0]);
+            res.json(rows);
         })
-        .catch((err) => {
-            console.log("error in server.js -- db.getImgData", err);
-        });
+        // .catch((err) => {
+        //     console.log("error in server.js -- db.getImg", err);
+        // });
 });
 
 
@@ -139,9 +139,9 @@ app.post("/images/:id/delete", (req, res) => {
         .then(({ rows }) => {
             res.json(rows);
         })
-        .catch((err) => {
-            console.log("error in server.js -- db.deleteImg", err);
-        });
+        // .catch((err) => {
+        //     console.log("error in server.js -- db.deleteImg", err);
+        // });
 });
 
 //---- GET *
@@ -154,3 +154,6 @@ app.get("*", (req, res) => {
 // ================ Listener ================ //
 
 app.listen(8080, () => console.log(`I'm listening -->> http://localhost:8080`));
+
+
+

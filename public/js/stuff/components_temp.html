@@ -19,12 +19,21 @@
 
 
 
-<section id="comments" v-for="comm in comments">
-    <div class="one-comment">
-        <h6 class="username">{{currImgStuff.}}</h6>
-        <p class="commment text">{{currImgStuff.}}</p>
-        <p class="comment date">{{currImgStuff.}}</p>
-    </div>
+<section v-for="comm in comments" id="comments" >
+    <form class="post-comment">
+        <label for="username">username</label>
+        <input v-model="newComm.username" type="text" name="username" id="username" required="required">
+        <label for="commText">commText</label>
+        <textarea v-model="newComm.commText" type="text" name="commText" id="commText" rows="3" cols="40" required="required">Comment...</textarea>
+        <button @click.prevent.default="postComment">Post/button>
+    </form>
+    <section class="posted">
+        <div class="one-comment">
+            <h6 class="comment username">{{comm.username}}</h6>
+            <p class="commment text">{{comm.comment}}</p>
+            <p class="comment date">{{comm.created_at}}</p>
+        </div>
+    </section>
 </section>
 
 

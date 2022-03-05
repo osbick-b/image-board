@@ -57,7 +57,7 @@ module.exports.getImagesAllSoFar = (lastLoadedId) => {
     );
 };
 
-module.exports.getImgData = (imgId) => {
+module.exports.getImg = (imgId) => {
     return db.query(
         `SELECT *
     FROM images 
