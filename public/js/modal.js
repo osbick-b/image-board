@@ -17,11 +17,7 @@ const imgModal = {
     },
     props: ["imgIdC"], // "placeholder" for info that we'll get from the parent --> id of image to be loaded
     mounted: function () {
-        ////////////// ---- BACK AND FORTH PART //////////////////////
-        console.log("this.imgIdC", this.imgIdC);
-        history.pushState({}, "", `/${this.imgIdC}`);
-        // console.log("location.pathname --> in modal ", location.pathname); // --> also gives "/"
-        ////////////////////////////////////////////////////////////
+        // console.log("in modal.js -- mount:imgIdC", this.imgIdC);
 
         fetch(`/images/${this.imgIdC}`) // --> the image itself and its additional info will be retrieved from DB by a fetch request
             .then((resp) => {

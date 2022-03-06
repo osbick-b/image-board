@@ -13,11 +13,11 @@ const app = Vue.createApp({
             isThereMore: null,
             lastLoadedId: 0,
             finalImgId: 0,
-            cm: {
-                username: "",
-                imgIdP: 0,
-                comment: "",
-            },
+            // cm: {
+            //     username: "",
+            //     imgIdP: 0,
+            //     comment: "",
+            // },
         };
     },
     components: {
@@ -39,43 +39,45 @@ const app = Vue.createApp({
             .catch((err) => {
                 console.log("error in app.js - mounted:fetch", err);
             });
+
+        addEventListener("popstate", (e) => {
+            console.log("POPSTATE EVENT", location.pathname, e.state);
+            this.imgIdP = e.state.storedImgId; // ----- ??? ------ if u go back all the way, storedImgId eventually evals to null. why is that && how to solve it/ is thata problem?
+        });
     },
     methods: {
-        evalUrl: function () {
-            let customUrl = location.pathname.slice(1);
+        evalUrl: function (url = location.pathname) {
+            let customUrl = url.slice(1);
             // evaluation of url will happen when app 1st mounts, if user is trying to access it from a different url than ROOT
             if (customUrl !== "") {
-                console.log(">> user typed custom URL!", customUrl);
                 fetch(`/evalUrl/${customUrl}`)
                     .then((resp) => resp.json())
-                    .then(({ validImgId }) => {
-                        console.log(
-                            "app.js AFTER -- from evalUrl: resp",
-                            validImgId
-                        );
-                        if (validImgId) {
-                            console.log("id is valid");
-                            this.openModal(validImgId);
+                    .then(({ validId }) => {
+                        if (validId) {
+                            // console.log("--> id is valid", validId);
+                            this.openModal(validId);
                         } else {
-                            console.log("id NOT valid");
-                            history.replaceState({}, "", "/"); // replace invalid url in browsing history
+                            // console.log("--> id NOT valid", validId);
+                            history.replaceState({storedImgId: this.imgIdP}, "", "/"); // replace invalid url in browsing history
                         }
                     })
                     .catch((err) => {
                         console.log("error in app.js -- evalUrl", err);
                     });
+            } else {
+            // history.pushState({}, "",x "/");
+                this.closeModal();
             }
         },
         closeModal: function () {
             // console.log("-- ok child, i heard ya. gonna close modal");
-            history.pushState({}, "", "/");
             this.imgIdP = 0;
+            history.pushState({ storedImgId: this.imgIdP }, "", "/");
         },
-        openModal: function (id) {
-            // +++ cond test if id exists
+        openModal: function (validId) {
             // for condit: maybe do the fetch request here instead of in the component? to test if id is in database
-            this.imgIdP = id;
-            console.log("this.imgIdP", this.imgIdP);
+            this.imgIdP = validId;
+            history.pushState({ storedImgId: this.imgIdP }, "", `/${validId}`);
         },
         selectFile: function (e) {
             this.file = e.target.files[0];
@@ -145,9 +147,3 @@ const app = Vue.createApp({
 });
 
 app.mount("#main"); // THIS IS ESSENTIAL, OTHERWISE THE APP WON'T MOUNT
-
-addEventListener("popstate", (e) => {
-    console.log(location.pathname, e.state);
-    // show whatever is appropriate for the new url
-    // if you need it, e.state has the data you passed to `pushState`
-});

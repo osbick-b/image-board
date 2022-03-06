@@ -93,6 +93,31 @@ app.get("/evalUrl/:customUrl", (req,res) => {
 });
 
 
+//---- GET img modal/:id ---- img for modal
+app.get("/images/:id", (req, res) => {
+    db.getImg(req.params.id)
+    .then(({ rows }) => {
+        res.json(rows[0]);
+    })
+    // .catch((err) => {
+        //     console.log("error in server.js -- db.getImg", err);
+        // });
+    });
+    
+
+//---- GET comments ---- comments for modal
+app.get("/images/:id/comments", (req, res) => {
+    db.getComments(req.params.id)
+    .then(({ rows }) => {
+            console.log("SERVER --- resp from getComments: rows", rows); //// OK UNTIL HERE
+            res.json(rows);
+        })
+        // .catch((err) => {
+        //     console.log("error in server.js -- db.getImg", err);
+        // });
+});
+
+
 //---- POST comment
 app.post("/images/:id/comment", (req, res) => {
     db.postComment(req.params.id, req.body.username, req.body.comment)
@@ -102,30 +127,6 @@ app.post("/images/:id/comment", (req, res) => {
     })
         // .catch((err) => {
         //     console.log("error in server.js -- /POST comment", err);
-        // });
-});
-
-//---- GET img modal/:id ---- img for modal
-app.get("/images/:id", (req, res) => {
-    db.getImg(req.params.id)
-        .then(({ rows }) => {
-            res.json(rows[0]);
-        })
-        // .catch((err) => {
-        //     console.log("error in server.js -- db.getImg", err);
-        // });
-});
-
-
-//---- GET comments ---- comments for modal
-app.get("/images/:id/comments", (req, res) => {
-    db.getComments(req.params.id)
-        .then(({ rows }) => {
-            console.log("SERVER --- resp from getComments: rows", rows); //// OK UNTIL HERE
-            res.json(rows);
-        })
-        // .catch((err) => {
-        //     console.log("error in server.js -- db.getImg", err);
         // });
 });
 

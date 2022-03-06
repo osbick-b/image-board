@@ -10,7 +10,7 @@ const db = spicedPg(
 
 module.exports.evalUrl = (customUrl) => {
     return db.query(
-        `SELECT id AS "validImgId" FROM images
+        `SELECT id AS "validId" FROM images
         WHERE id = $1`,
         [customUrl]
     );
