@@ -105,6 +105,10 @@ module.exports.addImage = (title, description, username, url) => {
     );
 };
 
+module.exports.deleteCommentsAll = (imgId) => {
+    // console.log("DB -- deleteImg");
+    return db.query(`DELETE FROM comments WHERE img_id = $1`, [imgId]);
+};
 module.exports.deleteImg = (imgId) => {
     // console.log("DB -- deleteImg");
     return db.query(`DELETE FROM images WHERE id = $1`, [imgId]);

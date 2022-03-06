@@ -46,6 +46,9 @@ const app = Vue.createApp({
         });
     },
     methods: {
+        clickEsc: function () {
+            console.log(">>> clicked enter <<<");
+        },
         evalUrl: function (url = location.pathname) {
             let customUrl = url.slice(1);
             // evaluation of url will happen when app 1st mounts, if user is trying to access it from a different url than ROOT
@@ -58,7 +61,11 @@ const app = Vue.createApp({
                             this.openModal(validId);
                         } else {
                             // console.log("--> id NOT valid", validId);
-                            history.replaceState({storedImgId: this.imgIdP}, "", "/"); // replace invalid url in browsing history
+                            history.replaceState(
+                                { storedImgId: this.imgIdP },
+                                "",
+                                "/"
+                            ); // replace invalid url in browsing history
                         }
                     })
                     .catch((err) => {
@@ -67,6 +74,12 @@ const app = Vue.createApp({
             } else {
                 this.closeModal();
             }
+        },
+        resetInput: function () {
+            this.title = "";
+            this.username = "";
+            this.description = "";
+            this.file = "";
         },
         closeModal: function () {
             // console.log("-- ok child, i heard ya. gonna close modal");
@@ -80,9 +93,9 @@ const app = Vue.createApp({
         selectFile: function (e) {
             this.file = e.target.files[0];
         },
-        updateLastLoadedFinal: function (data) {
-            this.finalImgId = data[0].finalImgId;
-            this.lastLoadedId = data[data.length - 1].id;
+        updateLastLoadedFinal: function (images) {
+            this.finalImgId = images[0].finalImgId;
+            this.lastLoadedId = images[images.length - 1].id;
             this.isThereMore =
                 this.lastLoadedId <= this.finalImgId ? false : true;
         },
@@ -112,6 +125,7 @@ const app = Vue.createApp({
                     return resp.json();
                 })
                 .then((data) => {
+                    this.resetInput();
                     return this.images.unshift(data);
                 })
                 .catch((err) => {
@@ -130,11 +144,25 @@ const app = Vue.createApp({
                     lastLoadedId: this.lastLoadedId,
                 }),
             })
-                .then((resp) => resp.json())
-                .then((data) => {
-                    console.log("img was deleted"); // --- use this as visib to add conditional in opening modal: cmmt out >> this.images = data
-                    this.updateLastLoadedFinal(data);
-                    this.images = data;
+                .then((resp) => {
+                    return resp.json();
+                })
+                // .then((data) => {
+                //     console.log("app.js -- AFTER img should deleted", data); // --- use this as visib to add conditional in opening modal: cmmt out >> this.images = data
+                //     this.updateLastLoadedFinal(data);
+                //     this.images = data;
+                //     this.closeModal();
+                // })
+                .then(({ deletedId }) => {
+                    console.log("this.images", this.images);
+                    console.log(
+                        "app.js -- AFTER img should deleted: id",
+                        deletedId
+                    ); // --- use this as visib to add conditional in opening modal: cmmt out >> this.images = data
+                    this.images = this.images.filter(
+                        (img) => img.id != deletedId
+                    );
+                    this.updateLastLoadedFinal(this.images);
                     this.closeModal();
                 })
                 .catch((err) => {

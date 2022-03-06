@@ -19,7 +19,7 @@
                 <label for="username">username</label>
                 <input v-model="username" type="text" name="username" id="username" required="required">
                 <label for="description">description</label>
-                <input v-model="description" type="text" name="description" id="description">
+                <textarea v-model="description" type="text" name="description" id="description"></textarea>
                 <label for="file">file</label>
                 <input @change="selectFile" type="file" name="file" id="file" accept="image/*" required="required">
                 <button @click.prevent.default="uploadImg">Upload</button>
@@ -40,7 +40,7 @@
 
 
         <!-- ----------- Image Modal ------------- -->
-        <img-modal v-if="imgIdP" :img-id-c="imgIdP" @clicked-x="closeModal" @clicked-delete="deleteImg"></img-modal>
+        <img-modal v-if="imgIdP" :img-id-c="imgIdP" @clicked-x="closeModal" @clicked-delete="deleteImg" ></img-modal>
         <!-- ----------- / Image Modal ------------- -->
 
 

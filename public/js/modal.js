@@ -45,14 +45,14 @@ const imgModal = {
     template: `
     <main class="img-modal bg">
         <div class="container">
-            <button @click="askToClose"  class="btn-close">X</button>
+        <button @click="askToClose"  class="btn-close">X</button>
+        <button @click="askToDelete" class="btn delete destructive">DELETE</button>
             <img class="one-img" :src="this.currImg.url" alt="this.currImg.title">
             <h3 class="img-title">{{this.currImg.id}}{{this.currImg.title}}</h3>
             <p class="img-description">{{this.currImg.description}}</p>
             
             <comments :img-id-c="imgIdP"></comments>
 
-            <button @click="askToDelete" class="btn delete destructive">DELETE</button>
         </div>
     </main>
     `,
@@ -62,4 +62,3 @@ const imgModal = {
 export default imgModal;
 
 
-            // <comments v-if="hasData" :comments-c="currComments"></comments>
