@@ -9,6 +9,8 @@ const imgModal = {
             name: "imgModal",
             emoji: "🥗",
             currImg: {},
+            // currComments: [],
+            hasData: false,
             imgIdP: this.imgIdC,
         };
     },
@@ -17,14 +19,15 @@ const imgModal = {
     },
     props: ["imgIdC"], // "placeholder" for info that we'll get from the parent --> id of image to be loaded
     mounted: function () {
-        // console.log("in modal.js -- mount:imgIdC", this.imgIdC);
-
         fetch(`/images/${this.imgIdC}`) // --> the image itself and its additional info will be retrieved from DB by a fetch request
-            .then((resp) => {
-                return resp.json();
-            })
+            .then((resp) => resp.json())
             .then((data) => {
+                console.log("in modal.js -- imgAndComms: data", data);
                 this.currImg = data;
+                // this.currImg = data.currImg;
+                // this.currComments = data.currComments;
+                // console.log("this.currComments", this.currComments);
+                // this.hasData = true;
             })
             .catch((err) => {
                 console.log("error in components.js - mounted: fetch", err);
@@ -57,3 +60,6 @@ const imgModal = {
 
 // ====== Export Area ====== //
 export default imgModal;
+
+
+            // <comments v-if="hasData" :comments-c="currComments"></comments>

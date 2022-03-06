@@ -79,18 +79,33 @@ app.post("/upload.json", uploader.single("file"), s3.upload, (req, res) => {
 
 // ---- GET evalUrl
 app.get("/evalUrl/:customUrl", (req,res) => {
-    console.log(
-        "in server.js -- evalUrl: req.params.url",
-        req.params.customUrl
-    );
     db.evalUrl(req.params.customUrl).then(({ rows }) => {
-        console.log("in server.js -- FROM DB evalUrl: rows", rows);
         return res.json(rows[0]?rows[0]:"salgadinho");
     })
     // .catch((err) => {
     //     console.log("error in server.js -- /GET evalUrl", err);
     // });
 });
+
+
+// // ---- GET modal img AND comments ---> ??? works but doesnt load comms in component bc its async: comm component loads b4 getting values from query in modal
+// app.get("/images/:id", (req, res) => {
+//     const imgAndComms = {};
+//     db.getImg(req.params.id)
+//     .then(({ rows }) => {
+//         imgAndComms.currImg = rows[0];
+//         return db.getComments(req.params.id)
+//     })
+//     .then(({ rows }) => {
+//         imgAndComms.currComments = rows;
+//         console.log("imgAndComms", imgAndComms);
+//         return res.json(imgAndComms);
+//     })
+//     // .catch((err) => {
+//         //     console.log("error in server.js -- db.getImg", err);
+//         // });
+//     });
+
 
 
 //---- GET img modal/:id ---- img for modal
@@ -109,7 +124,7 @@ app.get("/images/:id", (req, res) => {
 app.get("/images/:id/comments", (req, res) => {
     db.getComments(req.params.id)
     .then(({ rows }) => {
-            console.log("SERVER --- resp from getComments: rows", rows); //// OK UNTIL HERE
+            // console.log("SERVER --- resp from getComments: rows", rows); //// OK UNTIL HERE
             res.json(rows);
         })
         // .catch((err) => {
@@ -119,11 +134,12 @@ app.get("/images/:id/comments", (req, res) => {
 
 
 //---- POST comment
-app.post("/images/:id/comment", (req, res) => {
-    db.postComment(req.params.id, req.body.username, req.body.comment)
+app.post("/images/:id/postcomm", (req, res) => {
+    console.log("server.js -- req POST comment:", req.body);
+    db.postComment(req.params.id, req.body.username, req.body.commtext)
     .then(({ rows }) => {
         console.log("rows from postComment", rows);
-        return res.json(rows);
+        return res.json(rows[0]);
     })
         // .catch((err) => {
         //     console.log("error in server.js -- /POST comment", err);

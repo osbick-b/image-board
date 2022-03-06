@@ -65,7 +65,6 @@ const app = Vue.createApp({
                         console.log("error in app.js -- evalUrl", err);
                     });
             } else {
-            // history.pushState({}, "",x "/");
                 this.closeModal();
             }
         },
@@ -75,7 +74,6 @@ const app = Vue.createApp({
             history.pushState({ storedImgId: this.imgIdP }, "", "/");
         },
         openModal: function (validId) {
-            // for condit: maybe do the fetch request here instead of in the component? to test if id is in database
             this.imgIdP = validId;
             history.pushState({ storedImgId: this.imgIdP }, "", `/${validId}`);
         },
