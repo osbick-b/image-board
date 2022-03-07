@@ -3,17 +3,17 @@
     box-sizing: border-box;
 }
 
+:root {
+    --main-bg: whitesmoke;
+    --btn-plain-bg: pink;
+    --section-bg: white;
+}
+
 body {
-    background-color: #7b68ee;
+    background-color: var(--main-bg);
     /* padding: 0 5vw; */
     /* here as content loads in main#main, our setup should be there. 
     in body it wasn't working very well bc content is rendered dinamically  */
-}
-
-:root {
-    --main-bg-color: pink;
-    --btn-plain-bg: white;
-    --section-bg: hotpink;
 }
 
 main#main {
@@ -24,9 +24,8 @@ main#main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     gap: 5vh;
-    border: 2px solid indigo;
-    /* justify-content: center; */
 }
 
 section {
@@ -38,10 +37,15 @@ section {
 
 
 /*////////// HEADER //////////*/
-header#main-header {
+header#main, footer#main {
     width: 100%;
     background-color: var(--section-bg);
     padding: 3vh 5vw;
+    min-height: 10vh;
+}
+
+footer#main {
+    
 }
 
 .logo {
@@ -72,6 +76,7 @@ section#img-grid {
     height: 150px;
     width: 150px;
     object-fit: cover;
+    border: 2px solid greenyellow;
 }
 
 .img-title {
@@ -83,7 +88,7 @@ section#img-grid {
     border-radius: 50%;
     background-color: var(--btn-plain-bg);
     border: none;
-    position: absolute;
+    position: fixed;
     bottom: 3vh;
     margin: 0 auto;
 }
@@ -105,5 +110,10 @@ section#img-grid {
 .img-modal .container {
     height: 80%;
     width: 80%;
-    background-color: var(--main-bg-color);
+    background-color: var(--main-bg);
+}
+
+
+/* ///////////// FOOTER /////////////// */
+footer#main {
 }

@@ -8,7 +8,7 @@
 </head>
 <body>
     <main id="main">
-        <header id="main-header">
+        <header id="main">
             <h1 class="logo">{{appName}}</h1>
         </header>
 
@@ -28,17 +28,17 @@
         
         <!-- ??? do i really need this one extra div where the loop runs? is there any other way of doing it?  -->
         <section  id="img-grid">
-            <div v-for="img in images" :key="img.id">
-                <div class="one-img" @click="openModal(img.id)">
+            <div v-for="img in images" :key="img.id" @click="openModal(img.id)">
+                <!-- <div class="one-img" > -->
                     <img class="one-img" :src="img.url" :alt="img.title">
-                    <p class="img-title">{{img.id}}: {{img.title}}</p>
-                </div>
+                    <!-- <p class="img-title">{{img.title}}</p> -->
+                <!-- </div> -->
             </div>
         </section>
         
         <button class="more" v-if="isThereMore" @click="loadMoreImages">More</button>
 
-
+        <footer id="main"></footer>
         <!-- ----------- Image Modal ------------- -->
         <img-modal v-if="imgIdP" :img-id-c="imgIdP" @clicked-x="closeModal" @clicked-delete="deleteImg" ></img-modal>
         <!-- ----------- / Image Modal ------------- -->

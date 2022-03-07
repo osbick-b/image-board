@@ -21,6 +21,7 @@ exports.upload = (req, res, next) => {
     }
 
     const { filename, mimetype, size, path } = req.file;
+    
     s3.putObject({
         Bucket: "spicedling",
         ACL: "public-read",
