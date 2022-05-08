@@ -72,9 +72,11 @@ const comments = {
         <input v-model="commInput.username" type="text" name="username" id="username" required="required">
         <label for="commtext">commtext</label>
         <textarea v-model="commInput.commtext" type="text" name="commtext" id="commtext" rows="3" cols="40" required="required"></textarea>
-        <button @click.prevent.default="postComment">Post</button>
+        <button @click.prevent.default="postComment" class="horiz">Post</button>
     </form>
     <section v-for="comm in comments" class="posted">
+    <h3 class="title">Comments</h3>
+        
         <div class="one-comment">
             <h4 class="comment username">{{comm.id}} 🍀 {{comm.username}}</h4>
             <p class="commment text">{{comm.comment}}</p>

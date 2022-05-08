@@ -13,6 +13,7 @@ const app = Vue.createApp({
             isThereMore: null,
             lastLoadedId: 0,
             finalImgId: 0,
+            uploadModal: false, 
             // cm: {
             //     username: "",
             //     imgIdP: 0,
@@ -46,6 +47,10 @@ const app = Vue.createApp({
         });
     },
     methods: {
+        toggleUploadModal: function() {
+            this.uploadModal = !this.uploadModal;
+            console.log("this.uploadModal", this.uploadModal);
+        },
         clickEsc: function () {
             console.log(">>> clicked enter <<<");
         },

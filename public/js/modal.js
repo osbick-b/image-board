@@ -43,11 +43,11 @@ const imgModal = {
         },
     },
     template: `
-    <main class="img-modal bg">
+    <main class="modal bg">
         <div class="container">
-        <button @click="askToClose"  class="btn-close">X</button>
-        <button @click="askToDelete" class="btn delete destructive">DELETE</button>
-            <img class="one-img" :src="this.currImg.url" alt="this.currImg.title">
+        <button @click="askToClose"  class="close round small upper-corner">X</button>
+        <button @click="askToDelete" class="round delete destructive">DEL</button>
+            <img class="modal-img" :src="this.currImg.url" alt="this.currImg.title">
             <h3 class="img-title">{{this.currImg.id}}{{this.currImg.title}}</h3>
             <p class="img-description">{{this.currImg.description}}</p>
             

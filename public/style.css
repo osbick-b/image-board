@@ -5,8 +5,22 @@
 
 :root {
     --main-bg: whitesmoke;
-    --btn-plain-bg: pink;
     --section-bg: white;
+    --btn-plain-bg: linear-gradient(39deg, rgba(118,13,251,1) 36%, rgba(69,252,219,1) 100%);
+    --white-gradient: linear-gradient(128deg, rgba(255,255,255,1) 18%, rgba(240,237,237,1) 47%, rgba(255,255,255,1) 89%);
+
+    
+    --text-gradient-main: -webkit-linear-gradient(39deg, rgba(118,13,251,1) 36%, rgba(69,252,219,1) 100%);
+    --text-color-main: rgb(12,12,12);
+    --text-color-inverted: white;
+    --border-thin: 1px solid rgb(190,190,190);
+
+    --destructive-bg: linear-gradient(39deg, rgba(139,0,0,1) 36%, rgba(255,38,46,1) 100%);
+
+    --btn-round-size: 7vh;
+    --btn-round-big: 14vh;
+    --btn-round-bradius-big: 7vh;
+    --btn-round-bradius: 3.5vh;
 }
 
 body {
@@ -18,22 +32,79 @@ body {
 
 main#main {
     /* this is our outer main container for this proj */
-    min-height: 100vh;
     /* width: 100%; */
     /* position: relative; */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    gap: 5vh;
+    gap: 4vh;
 }
 
 section {
-    border: 1px solid yellow;
     width: 90%;
     /* margin: 5vh auto; */
 }
 
+p {
+    color: var(--text-color-main);
+}
+
+button {
+    border: none;
+    background: var(--btn-plain-bg);
+    color: var(--text-color-inverted);
+    padding: 2vh 6vw;
+    text-transform: uppercase;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+
+/* //////////// TYPES ///////////// */
+.round {
+    height: var(--btn-round-size);
+    width: var(--btn-round-size);
+    border-radius: var(--btn-round-bradius);
+    padding: 0;
+}
+
+.horiz {
+    height: var(--btn-round-size);
+    border-radius: var(--btn-round-bradius);
+    width: 150px;
+    /* width: var(--btn-round-size*3); */
+}
+
+.round.big { 
+    height: var(--btn-round-big);
+    width: var(--btn-round-big);
+    border-radius: var(--btn-round-bradius-big);
+    padding: 0;
+}
+
+.open-upload {
+    position: fixed;
+    bottom: 3vh;
+    right: 3vh;
+    padding:0;
+    z-index: 10;
+}
+
+.inverted {
+    background: var(--white-gradient);
+    
+}
+
+
+.destructive {
+    background: var(--destructive-bg);
+}
 
 
 /*////////// HEADER //////////*/
@@ -45,10 +116,18 @@ header#main, footer#main {
 }
 
 footer#main {
-    
+    border-top: var(--border-thin);
+}
+
+header#main {
+    border-bottom: var(--border-thin);
 }
 
 .logo {
+    font-size: 3rem;
+    background: var(--text-gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 
@@ -68,36 +147,42 @@ label.upload {
 section#img-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 3vw;
     place-items: center;
+    gap: 3vw;
+    position: relative;
+
+    
 }
 
 .one-img {
-    height: 150px;
-    width: 150px;
+    height: 27vw;
+    width: 27vw;
     object-fit: cover;
-    border: 2px solid greenyellow;
 }
 
 .img-title {
 }
 
 .more {
-    height: 10vw;
+    /* height: 10vw;
     width: 10vw;
-    border-radius: 50%;
-    background-color: var(--btn-plain-bg);
-    border: none;
+    border-radius: 50%; */
     position: fixed;
     bottom: 3vh;
     margin: 0 auto;
+    padding:0;
 }
+
+.delete {
+
+}
+
 
 /*/ ///////// MODAL //////////*/
 
-.img-modal.bg {
+.modal.bg {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     background-color: rgba(0, 0, 0, 0.6);
     position: fixed;
     top: 0;
@@ -105,14 +190,31 @@ section#img-grid {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 20;
 }
 
-.img-modal .container {
+.modal .container {
     height: 80%;
     width: 80%;
+    border-radius: 4vh;
     background-color: var(--main-bg);
+    padding: 6vh 8vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
 }
 
+.modal .container img {
+    width: 20vh;
+}
+
+.upper-corner {
+    position: absolute;
+    top: 3vh;
+    right: 3vh;
+}
 
 /* ///////////// FOOTER /////////////// */
 footer#main {

@@ -25,7 +25,7 @@ module.exports.getImages = () => {
             LIMIT 1) AS "finalImgId" 
         FROM images
         ORDER BY id DESC
-        LIMIT 4`
+        LIMIT 9`
     );
 };
 
@@ -38,7 +38,7 @@ module.exports.getMoreImages = (lastLoadedId) => {
         FROM images 
         WHERE id < $1
         ORDER BY id DESC
-        LIMIT 4`,
+        LIMIT 6`,
         [lastLoadedId]
     );
 };

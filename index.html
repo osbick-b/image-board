@@ -12,18 +12,22 @@
             <h1 class="logo">{{appName}}</h1>
         </header>
 
-        <section id="upload">
-            <form>
-                <label for="title">title</label>
-                <input v-model="title" type="text" name="title" id="title">
-                <label for="username">username</label>
-                <input v-model="username" type="text" name="username" id="username" required="required">
-                <label for="description">description</label>
-                <textarea v-model="description" type="text" name="description" id="description"></textarea>
-                <label for="file">file</label>
-                <input @change="selectFile" type="file" name="file" id="file" accept="image/*" required="required">
-                <button @click.prevent.default="uploadImg">Upload</button>
-            </form>
+        <section v-if="uploadModal" id="upload" class="modal bg">
+            <div class="container">
+        <button @click="toggleUploadModal"  class="round upper-corner">X</button>
+
+                <form>
+                    <label for="title">title</label>
+                    <input v-model="title" type="text" name="title" id="title">
+                    <label for="username">username</label>
+                    <input v-model="username" type="text" name="username" id="username" required="required">
+                    <label for="description">description</label>
+                    <textarea v-model="description" type="text" name="description" id="description"></textarea>
+                    <label for="file">file</label>
+                    <input @change="selectFile" type="file" name="file" id="file" accept="image/*" required="required" class="horiz"> 
+                    <button @click.prevent.default="uploadImg" class="horiz"  @click="toggleUploadModal">Upload</button>
+                </form>
+            </div>
         </section>
         
         <!-- ??? do i really need this one extra div where the loop runs? is there any other way of doing it?  -->
@@ -36,7 +40,9 @@
             </div>
         </section>
         
-        <button class="more" v-if="isThereMore" @click="loadMoreImages">More</button>
+        <button class="round more" v-if="isThereMore" @click="loadMoreImages">+</button>
+
+        <button class="open-upload round big" v-if="uploadModal === false" @click="toggleUploadModal">Upload</button>
 
         <footer id="main"></footer>
         <!-- ----------- Image Modal ------------- -->
